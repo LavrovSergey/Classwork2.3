@@ -63,12 +63,15 @@ struct List {
 		}
 	};
 	Node* find(char nomer[8]) {
+		int a = 0;
 		Node* cur = head;
 		while (cur && strcmp(cur->bus.nomer, nomer))
 		{
-			cur = cur->next;
+			if (strcmp(cur->bus.nomer, nomer)) {
+				cur = cur->next;
+			}
 		}
-		return cur;
+		 return cur;
 	}
 	void last(Node* p)
 	{
@@ -93,12 +96,13 @@ struct List {
 			tail->next = cur;
 			tail = cur;
 		}
-		cout << "Now on route";
+		cout << "Now on route"<<endl;
+		system("pause");
 	}
 	int show() {
 		Node* cur = head;
 		int a = 1;
-		if (head == NULL) { cout << "Empty"; }
+		if (head == NULL) { cout << "Empty" << endl; system("pause"); }
 		else {
 			do {
 				cout << "Number of bus: ";
@@ -112,7 +116,7 @@ struct List {
 			a = 2;
 		}
 		 int code;
-		 cout << "Press ENTER to continue";
+		 cout << "Press ENTER to continue"<<endl;
 		do {
 			code = _getch();
 		 }
@@ -179,19 +183,43 @@ int main(bool isRunning)
 		switch (answer)
 		{
 		case 0:park.creat(); break;
-		case 1:if (park.show() == 1) { cout << "empty"; break; }
-			   else { cout << "Enter number of bus"; cin.clear(); cin.ignore(cin.rdbuf()->in_avail()); cin >> nomer; p = park.find(nomer);  route.last(p); park.del(p, nomer); }; break;
+		case 1: {
+			if (park.show() == 1)
+			{
+				cout << "empty" << endl; system("pause"); break;
+			}
+			else
+			{
+				cout << "Enter number of bus"<<endl; cin.clear(); cin.ignore(cin.rdbuf()->in_avail());
+				cin >> nomer; p = park.find(nomer);
+				if (p == 0)
+				{
+					cout << "Такого нет"<<endl; system("pause"); break;
+				}
+				else {
+					route.last(p);
+					park.del(p, nomer);
+				}
+				break;
+			}
+		}
 		case 2: {
 			if (route.show() == 1) 
 			{
-				cout << "empty"; break;
+				cout << "empty" << endl; system("pause"); break;
 			}
-			else { cout << "Enter number of bus"; cin.clear(); cin.ignore(cin.rdbuf()->in_avail()); 
-			cin >> nomer; 
-			p = route.find(nomer);  
-			park.last(p); 
-			route.del(p, nomer); }
-			break; }
+			else {
+				cout << "Enter number of bus"; cin.clear(); cin.ignore(cin.rdbuf()->in_avail());
+				cin >> nomer;
+				p = route.find(nomer);
+				if (p == 0) { cout << "Такого нет"; system("pause"); break; }
+				else {
+					park.last(p);
+					route.del(p, nomer);
+				}
+				break;
+			}
+		}
 		case 3:park.show(); break;
 		case 4:route.show(); break;
 		case 5: system("cls"); cout << "Goodbye!\n__________________"; isRunning = false;
